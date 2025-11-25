@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulator sudskih taksi</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f7;
+        margin: 0;
+        padding: 20px;
+    }
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 16px;
+        max-width: 520px;
+        margin: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+        text-align: center;
+        margin-top: 0;
+        color: #333;
+    }
+    label {
+        font-size: 16px;
+        display: block;
+        margin-top: 15px;
+        color: #444;
+    }
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        border: 1px solid #bbb;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+    button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 14px;
+        border: none;
+        background: #0078ff;
+        color: white;
+        font-size: 18px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+    .result-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: #eef5ff;
+        border-left: 4px solid #0078ff;
+        border-radius: 10px;
+        display: none;
+    }
+    .item {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+    .item b {
+        color: #000;
+    }
+    .note {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+    }
+    details {
+        margin-top: 25px;
+        padding: 15px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+    details summary {
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+    }
+    details p {
+        margin-top: 12px;
+        font-size: 15px;
+        line-height: 1.45;
+        color: #444;
+    }
+</style>
+</head>
+
+<body>
+<div class="card">
+    <h2>Kalkulator sudskih taksi</h2>
+
+    <label>Vrednost spora (RSD):</label>
+    <input type="number" id="vrednost" min="0" placeholder="Unesite vrednost…">
+
+    <button onclick="izracunaj()">Izračunaj</button>
+
+    <div id="rezultati" class="result-box">
+        <div class="item" id="osnovna"></div>
+        <div class="item" id="polovina"></div>
+        <div class="item" id="zalba"></div>
+        <div class="item" id="revizija"></div>
+        <div class="item" id="odluka_revizija"></div>
+        <div class="item" id="predlog"></div>
+        <div class="item" id="predlog_javni"></div>
+    </div>
+
+    <p class="note">Ovaj kalkulator je informativnog karaktera.</p>
+
+    <details>
+        <summary>Ostale sudske takse</summary>
+        <p>
+        Za žalbu protiv presude ili rešenja i za žalbu protiv rešenja u sporovima zbog smetanja poseda,
+        plaća se taksa iz stava (1) ovog tarifnog broja, a u postupku pred privrednim sudom taksa iz stava (2).<br><br>
+        Za reviziju protiv presude ili rešenja i za predlog za ponavljanje postupka plaća se dvostruka taksa iz stava (1),
+        odnosno dvostruka taksa iz stava (2) ako se pobija odluka privrednog suda.<br><br>
+        Za predlog da se prizna odluka stranog suda i za žalbu protiv rešenja po predlogu
+        plaća se 2.800 RSD pred opštim sudom, odnosno 27.000 RSD pred privrednim sudom.<br><br>
+        Za žalbu protiv rešenja o povraćaju u pređašnje stanje – polovina takse iz stava (1) ili (2),
+        ali ne više od 2.800 / 27.000 RSD.<br><br>
+        Za prvostepenu presudu i rešenje u sporovima zbog smetanja poseda taksa se plaća prema vrednosti spora
+        (stav 1 tarifnog broja 1), odnosno po stavu 2 pred privrednim sudom.<br><br>
+        Za presudu zbog propuštanja i za presudu na osnovu priznanja/odricanja – polovina takse.<br><br>
+        Za rešenje o odbacivanju tužbe – polovina takse, najviše 15.000 / 27.000 RSD.<br><br>
+        Za rešenje o izdavanju platnog naloga – polovina takse.<br><br>
+        Za rešenje po predlogu za obezbeđenje ili prigovoru protiv rešenja po predlogu za izvršenje
+        na osnovu verodostojne isprave – polovina takse.<br><br>
+        Ako je nadležan javni izvršitelj – trećina takse.<br><br>
+        Ako drugostepeni sud odbaci žalbu ili ukine presudu – ne plaća se taksa.<br><br>
+        Ako vanredno pravno sredstvo bude odbačeno ili ukinuta odluka nižeg suda – ne plaća se taksa.
+        </p>
+    </details>
+</div>
+
+<script>
+function osnovnaTaksa(A) {
+    if (A <= 10000) return 2800;
+    if (A <= 100000) return 2800 + (A * 0.04);
+    if (A <= 500000) return 11000 + (A * 0.02);
+    if (A <= 1000000) return 32000 + (A * 0.01);
+    return Math.min(53000 + (A * 0.005), 105000);
+}
+
+function izracunaj() {
+    const A = parseFloat(document.getElementById("vrednost").value);
+
+    if (isNaN(A) || A <= 0) {
+        alert("Unesite validnu vrednost spora.");
+        return;
+    }
+
+    let b = osnovnaTaksa(A);
+
+    const osnovna = b;
+    const polovina_osnovne = b / 2;
+    const odluka_zalba = b;
+    const revizija = b * 2;
+    const odluka_revizija = b * 3;
+    const predlog = b / 2;
+    const predlog_javni = b / 3;
+
+    document.getElementById("osnovna").innerHTML =
+        "Taksa za tužbu/presudu/žalbu: <b>" + Math.round(osnovna).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("polovina").innerHTML =
+        "Polovina osnovne takse (½): <b>" + Math.round(polovina_osnovne).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("zalba").innerHTML =
+        "Odluka po žalbi (×1): <b>" + Math.round(odluka_zalba).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("revizija").innerHTML =
+        "Revizija (×2): <b>" + Math.round(revizija).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("odluka_revizija").innerHTML =
+        "Odluka po reviziji (×3): <b>" + Math.round(odluka_revizija).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("predlog").innerHTML =
+        "Predlog za izvršenje: <b>" + Math.round(predlog).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("predlog_javni").innerHTML =
+        "Predlog za izvršenje (javni izvršitelj, ⅓): <b>" + Math.round(predlog_javni).toLocaleString('sr-RS') + " RSD</b>";
+
+    document.getElementById("rezultati").style.display = "block";
+}
+</script>
