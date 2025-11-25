@@ -16,7 +16,7 @@
         background: white;
         padding: 20px;
         border-radius: 16px;
-        max-width: 480px;
+        max-width: 520px;
         margin: auto;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
@@ -68,7 +68,12 @@
     .item b {
         color: #000;
     }
-    /* Dropdown */
+    .note {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+    }
     details {
         margin-top: 25px;
         padding: 15px;
@@ -89,24 +94,10 @@
         line-height: 1.45;
         color: #444;
     }
-
-    /* NOTICE */
-    .notice {
-        margin-top: 20px;
-        padding: 12px 14px;
-        background: #fff8e6;
-        border: 1px solid #ffd380;
-        border-radius: 10px;
-        font-size: 14px;
-        color: #6b4f00;
-        text-align: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
 </style>
 </head>
 
 <body>
-
 <div class="card">
     <h2>Kalkulator sudskih taksi</h2>
 
@@ -125,56 +116,40 @@
         <div class="item" id="predlog_javni"></div>
     </div>
 
-    <!-- OSTALI TEKST – DROPDOWN -->
+    <p class="note">Ovaj kalkulator je informativnog karaktera.</p>
+
     <details>
         <summary>Ostale sudske takse</summary>
         <p>
         Za žalbu protiv presude ili rešenja i za žalbu protiv rešenja u sporovima zbog smetanja poseda,
         plaća se taksa iz stava (1) ovog tarifnog broja, a u postupku pred privrednim sudom taksa iz stava (2).<br><br>
-
         Za reviziju protiv presude ili rešenja i za predlog za ponavljanje postupka plaća se dvostruka taksa iz stava (1),
         odnosno dvostruka taksa iz stava (2) ako se pobija odluka privrednog suda.<br><br>
-
         Za predlog da se prizna odluka stranog suda i za žalbu protiv rešenja po predlogu
         plaća se 2.800 RSD pred opštim sudom, odnosno 27.000 RSD pred privrednim sudom.<br><br>
-
         Za žalbu protiv rešenja o povraćaju u pređašnje stanje – polovina takse iz stava (1) ili (2),
         ali ne više od 2.800 / 27.000 RSD.<br><br>
-
         Za prvostepenu presudu i rešenje u sporovima zbog smetanja poseda taksa se plaća prema vrednosti spora
         (stav 1 tarifnog broja 1), odnosno po stavu 2 pred privrednim sudom.<br><br>
-
         Za presudu zbog propuštanja i za presudu na osnovu priznanja/odricanja – polovina takse.<br><br>
-
         Za rešenje o odbacivanju tužbe – polovina takse, najviše 15.000 / 27.000 RSD.<br><br>
-
         Za rešenje o izdavanju platnog naloga – polovina takse.<br><br>
-
         Za rešenje po predlogu za obezbeđenje ili prigovoru protiv rešenja po predlogu za izvršenje
         na osnovu verodostojne isprave – polovina takse.<br><br>
-
         Ako je nadležan javni izvršitelj – trećina takse.<br><br>
-
         Ako drugostepeni sud odbaci žalbu ili ukine presudu – ne plaća se taksa.<br><br>
-
         Ako vanredno pravno sredstvo bude odbačeno ili ukinuta odluka nižeg suda – ne plaća se taksa.
         </p>
     </details>
-
-    <!-- NOTICE ADDED -->
-    <div class="notice" role="note" aria-live="polite">
-        Kalkulator je informativnog karaktera.
-    </div>
-
 </div>
 
 <script>
 function osnovnaTaksa(A) {
     if (A <= 10000) return 2800;
-    if (A <= 100000) return 2800 + A * 0.04;
-    if (A <= 500000) return 6800 + A * 0.03;
-    if (A <= 1000000) return 32000 + A * 0.01;
-    return Math.min(53000 + A * 0.005, 105000);
+    if (A <= 100000) return 2800 + (A * 0.04);
+    if (A <= 500000) return 11000 + (A * 0.02);
+    if (A <= 1000000) return 32000 + (A * 0.01);
+    return Math.min(53000 + (A * 0.005), 105000);
 }
 
 function izracunaj() {
@@ -219,6 +194,3 @@ function izracunaj() {
     document.getElementById("rezultati").style.display = "block";
 }
 </script>
-
-</body>
-</html>
